@@ -1,8 +1,6 @@
-// **********************************************************************
 //
-// Copyright (c) 2003-2018 ZeroC, Inc. All rights reserved.
+// Copyright (c) ZeroC, Inc. All rights reserved.
 //
-// **********************************************************************
 
 #import <objc/Ice.h>
 #import <Hello.h>
@@ -83,7 +81,7 @@ run(id<ICECommunicator> communicator)
 
             do
             {
-                c = getchar();
+                c = (char)getchar();
             }
             while(c != EOF && c == '\n');
             if(c == 't')

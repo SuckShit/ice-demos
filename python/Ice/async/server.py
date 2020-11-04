@@ -1,9 +1,7 @@
 #!/usr/bin/env python
-# **********************************************************************
 #
-# Copyright (c) 2003-2018 ZeroC, Inc. All rights reserved.
+# Copyright (c) ZeroC, Inc. All rights reserved.
 #
-# **********************************************************************
 
 import signal
 import sys
@@ -33,7 +31,7 @@ class WorkQueue(threading.Thread):
                 if len(self._callbacks) == 0:
                     self._cond.wait()
 
-                if not len(self._callbacks) == 0:
+                if not self._done and not len(self._callbacks) == 0:
                     self._cond.wait(self._callbacks[0].delay / 1000.0)
 
                     if not self._done:

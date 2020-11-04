@@ -1,8 +1,6 @@
-// **********************************************************************
 //
-// Copyright (c) 2003-2018 ZeroC, Inc. All rights reserved.
+// Copyright (c) ZeroC, Inc. All rights reserved.
 //
-// **********************************************************************
 
 #include <Ice/Ice.h>
 #include <Nrvo.h>
@@ -86,7 +84,7 @@ run(const Ice::CommunicatorPtr& communicator)
     {
         try
         {
-            cout << "==> ";
+        cout << "==> " << flush;
             cin >> c;
 
             switch(c)

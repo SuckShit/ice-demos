@@ -7,11 +7,9 @@
     <H1>Hello Demo</H1>
 
 <?php
-// **********************************************************************
 //
-// Copyright (c) 2003-2018 ZeroC, Inc. All rights reserved.
+// Copyright (c) ZeroC, Inc. All rights reserved.
 //
-// **********************************************************************
 
 //
 // Enable error reporting
@@ -19,7 +17,7 @@
 error_reporting(E_ERROR | E_WARNING | E_PARSE);
 
 require_once 'Ice.php';
-require_once 'generated/Hello.php';
+require_once 'Hello.php';
 
 $communicator = Ice\initialize();
 

@@ -1,8 +1,6 @@
-// **********************************************************************
 //
-// Copyright (c) 2003-2018 ZeroC, Inc. All rights reserved.
+// Copyright (c) ZeroC, Inc. All rights reserved.
 //
-// **********************************************************************
 
 #include <Ice/Ice.h>
 #include <NrvoI.h>
@@ -53,7 +51,7 @@ NrvoI::op3(int size, const Ice::Current&)
         // RVO (Return Value Optimization): return value
         // is constructed in place.
         //
-        return MyStringSeq(size, "hello");
+        return MyStringSeq(static_cast<size_t>(size), "hello");
     }
 
     //

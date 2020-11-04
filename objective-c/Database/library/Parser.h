@@ -1,8 +1,6 @@
-// **********************************************************************
 //
-// Copyright (c) 2003-2018 ZeroC, Inc. All rights reserved.
+// Copyright (c) ZeroC, Inc. All rights reserved.
 //
-// **********************************************************************
 
 #import <objc/Ice.h>
 #import <Library.h>
@@ -11,6 +9,9 @@
 //
 // Stuff for flex and bison
 //
+
+#pragma clang diagnostic ignored "-Wconversion"
+#pragma clang diagnostic ignored "-Wdocumentation"
 
 #define YYSTYPE ICE_STRONG_QUALIFIER NSMutableArray*
 #define YY_DECL int yylex(YYSTYPE* yylvalp)

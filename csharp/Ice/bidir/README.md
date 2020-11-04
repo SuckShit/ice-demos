@@ -4,15 +4,12 @@ client to send callbacks, for example, because firewalls block
 incoming connections to the client.
 
 To run the demo, first start the server:
-
-| .NET Framework 4.5 | .NET Core 2.0        |
-| ------------------ | -------------------- |
-| `server`           | `dotnet server.dll`  |
-
+```
+dotnet run --project server\server.csproj
+```
 In a separate window, start the client:
+```
+dotnet run --project client\client.csproj
+```
 
-| .NET Framework 4.5 | .NET Core 2.0       |
-| ------------------ | ------------------- |
-| `client`           | `dotnet client.dll` |
-
-[1]: https://doc.zeroc.com/display/Ice37/Bidirectional+Connections
+[1]: https://doc.zeroc.com/ice/4.0/client-server-features/connection-management/bidirectional-connections

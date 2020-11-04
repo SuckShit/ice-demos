@@ -1,10 +1,8 @@
-// **********************************************************************
 //
-// Copyright (c) 2003-2018 ZeroC, Inc. All rights reserved.
+// Copyright (c) ZeroC, Inc. All rights reserved.
 //
-// **********************************************************************
 
-import Demo.*;
+import com.zeroc.demos.IceStorm.clock.Demo.*;
 
 public class Subscriber
 {
@@ -23,7 +21,7 @@ public class Subscriber
         java.util.List<String> extraArgs = new java.util.ArrayList<String>();
 
         com.zeroc.Ice.Communicator communicator = com.zeroc.Ice.Util.initialize(args, "config.sub", extraArgs);
-
+        communicator.getProperties().setProperty("Ice.Default.Package", "com.zeroc.demos.IceStorm.clock");
         //
         // Destroy communicator during JVM shutdown
         //
@@ -132,19 +130,6 @@ public class Subscriber
             return 1;
         }
 
-        if(retryCount != null)
-        {
-            if(option.equals("None"))
-            {
-                option = "Twoway";
-            }
-            else if(!option.equals("Twoway") && !option.equals("Ordered"))
-            {
-                usage();
-                return 1;
-            }
-        }
-
         if(batch && (option.equals("Twoway") || option.equals("Ordered")))
         {
             System.err.println("batch can only be set with oneway or datagram");
@@ -249,16 +234,13 @@ public class Subscriber
         }
         catch(com.zeroc.IceStorm.AlreadySubscribed e)
         {
-            // If we're manually setting the subscriber id ignore.
+            // This should never occur when subscribing with an UUID
             if(id == null)
             {
                 e.printStackTrace();
                 return 1;
             }
-            else
-            {
-                System.out.println("reactivating persistent subscriber");
-            }
+            System.out.println("reactivating persistent subscriber");
         }
         catch(com.zeroc.IceStorm.InvalidSubscriber e)
         {

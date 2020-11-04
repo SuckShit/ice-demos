@@ -1,8 +1,6 @@
-// **********************************************************************
 //
-// Copyright (c) 2003-2018 ZeroC, Inc. All rights reserved.
+// Copyright (c) ZeroC, Inc. All rights reserved.
 //
-// **********************************************************************
 
 #include <Parser.h>
 
@@ -52,7 +50,7 @@ Parser::list(bool recursive)
 }
 
 void
-Parser::list(const shared_ptr<DirectoryPrx>& dir, bool recursive, int depth)
+Parser::list(const shared_ptr<DirectoryPrx>& dir, bool recursive, size_t depth)
 {
     string indent(depth++, '\t');
 

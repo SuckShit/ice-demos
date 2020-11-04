@@ -1,8 +1,8 @@
-// **********************************************************************
 //
-// Copyright (c) 2003-2018 ZeroC, Inc. All rights reserved.
+// Copyright (c) ZeroC, Inc. All rights reserved.
 //
-// **********************************************************************
+
+import com.zeroc.demos.Ice.invoke.Demo.*;
 
 public class PrinterI implements com.zeroc.Ice.Blobject
 {
@@ -21,12 +21,10 @@ public class PrinterI implements com.zeroc.Ice.Blobject
         {
             String message = in.readString();
             System.out.println("Printing string `" + message + "'");
-            in.endEncapsulation();
         }
         else if(current.operation.equals("printStringSequence"))
         {
             String[] seq = in.readStringSeq();
-            in.endEncapsulation();
             System.out.print("Printing string sequence {");
             for(int i = 0; i < seq.length; ++i)
             {
@@ -40,8 +38,7 @@ public class PrinterI implements com.zeroc.Ice.Blobject
         }
         else if(current.operation.equals("printDictionary"))
         {
-            java.util.Map<String, String> dict = Demo.StringDictHelper.read(in);
-            in.endEncapsulation();
+            java.util.Map<String, String> dict = StringDictHelper.read(in);
             System.out.print("Printing dictionary {");
             boolean first = true;
             for(java.util.Map.Entry<String, String> i : dict.entrySet())
@@ -57,20 +54,17 @@ public class PrinterI implements com.zeroc.Ice.Blobject
         }
         else if(current.operation.equals("printEnum"))
         {
-            Demo.Color c = Demo.Color.ice_read(in);
-            in.endEncapsulation();
+            Color c = Color.ice_read(in);
             System.out.println("Printing enum " + c);
         }
         else if(current.operation.equals("printStruct"))
         {
-            Demo.Structure s = Demo.Structure.ice_read(in);
-            in.endEncapsulation();
+            Structure s = Structure.ice_read(in);
             System.out.println("Printing struct: name=" + s.name + ", value=" + s.value);
         }
         else if(current.operation.equals("printStructSequence"))
         {
-            Demo.Structure[] seq = Demo.StructureSeqHelper.read(in);
-            in.endEncapsulation();
+            Structure[] seq = StructureSeqHelper.read(in);
             System.out.print("Printing struct sequence: {");
             for(int i = 0; i < seq.length; ++i)
             {
@@ -86,20 +80,19 @@ public class PrinterI implements com.zeroc.Ice.Blobject
         {
             class Holder
             {
-                Demo.C obj;
+                C obj;
             }
             final Holder h = new Holder();
-            in.readValue(v -> h.obj = (Demo.C)v);
+            in.readValue(v -> h.obj = (C)v);
             in.readPendingValues();
-            in.endEncapsulation();
             System.out.println("Printing class: s.name=" + h.obj.s.name + ", s.value=" + h.obj.s.value);
         }
         else if(current.operation.equals("getValues"))
         {
-            Demo.C c = new Demo.C();
-            c.s = new Demo.Structure();
+            C c = new C();
+            c.s = new Structure();
             c.s.name = "green";
-            c.s.value = Demo.Color.green;
+            c.s.value = Color.green;
             com.zeroc.Ice.OutputStream out = new com.zeroc.Ice.OutputStream(communicator);
             out.startEncapsulation();
             out.writeValue(c);
@@ -111,7 +104,7 @@ public class PrinterI implements com.zeroc.Ice.Blobject
         else if(current.operation.equals("throwPrintFailure"))
         {
             System.out.println("Throwing PrintFailure");
-            Demo.PrintFailure ex = new Demo.PrintFailure();
+            PrintFailure ex = new PrintFailure();
             ex.reason = "paper tray empty";
             com.zeroc.Ice.OutputStream out = new com.zeroc.Ice.OutputStream(communicator);
             out.startEncapsulation();
@@ -133,6 +126,10 @@ public class PrinterI implements com.zeroc.Ice.Blobject
             throw ex;
         }
 
+        //
+        // Verify we read all in parameters
+        //
+        in.endEncapsulation();
         return r;
     }
 }

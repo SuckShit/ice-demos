@@ -1,9 +1,7 @@
 #!/usr/bin/env python
-# **********************************************************************
 #
-# Copyright (c) 2003-2018 ZeroC, Inc. All rights reserved.
+# Copyright (c) ZeroC, Inc. All rights reserved.
 #
-# **********************************************************************
 
 import signal
 import sys
@@ -59,8 +57,9 @@ class CallbackSenderI(Demo.CallbackSender, threading.Thread):
 
     def removeClient(self, client, ex):
         with self._cond:
-            print("removing client `" + Ice.identityToString(client.ice_getIdentity()) + "':\n" + str(ex))
-            self._clients.remove(client)
+            if client in self._clients:
+                print("removing client `" + Ice.identityToString(client.ice_getIdentity()) + "':\n" + str(ex))
+                self._clients.remove(client)
 
 
 #

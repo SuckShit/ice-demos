@@ -1,17 +1,14 @@
-// **********************************************************************
 //
-// Copyright (c) 2003-2018 ZeroC, Inc. All rights reserved.
+// Copyright (c) ZeroC, Inc. All rights reserved.
 //
-// **********************************************************************
 
 package Filesystem;
 
 public class FileI extends _FileDisp
 {
     // FileI constructor
-
     public
-    FileI(Ice.Communicator communicator, String name, DirectoryI parent)
+    FileI(String name, DirectoryI parent)
     {
         _name = name;
         _parent = parent;
@@ -26,7 +23,6 @@ public class FileI extends _FileDisp
     }
 
     // Slice Node::name() operation
-
     public String
     name(Ice.Current current)
     {
@@ -34,7 +30,6 @@ public class FileI extends _FileDisp
     }
 
     // Slice File::read() operation
-
     public String[]
     read(Ice.Current current)
     {
@@ -42,7 +37,6 @@ public class FileI extends _FileDisp
     }
 
     // Slice File::write() operation
-
     public void
     write(String[] text, Ice.Current current)
         throws GenericError

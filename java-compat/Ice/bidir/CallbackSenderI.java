@@ -1,8 +1,6 @@
-// **********************************************************************
 //
-// Copyright (c) 2003-2018 ZeroC, Inc. All rights reserved.
+// Copyright (c) ZeroC, Inc. All rights reserved.
 //
-// **********************************************************************
 
 import Demo.*;
 
@@ -81,9 +79,11 @@ class CallbackSenderI extends _CallbackSenderDisp implements java.lang.Runnable
     synchronized private void
     removeClient(CallbackReceiverPrx client, Exception ex)
     {
-        System.out.println("removing client `" + Ice.Util.identityToString(client.ice_getIdentity()) + "':");
-        ex.printStackTrace();
-        _clients.remove(client);
+        if(_clients.remove(client))
+        {
+            System.out.println("removing client `" + Ice.Util.identityToString(client.ice_getIdentity()) + "':");
+            ex.printStackTrace();
+        }
     }
 
     private Ice.Communicator _communicator;

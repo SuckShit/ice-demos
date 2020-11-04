@@ -1,8 +1,6 @@
-// **********************************************************************
 //
-// Copyright (c) 2003-2018 ZeroC, Inc. All rights reserved.
+// Copyright (c) ZeroC, Inc. All rights reserved.
 //
-// **********************************************************************
 
 #include <Ice/Ice.h>
 #include <Session.h>
@@ -68,7 +66,7 @@ int
 run(const Ice::CommunicatorPtr& communicator)
 {
     string name;
-    cout << "Please enter your name ==> ";
+    cout << "Please enter your name ==> " << flush;
     cin >> name;
     if(!cin.good())
     {
@@ -93,7 +91,7 @@ run(const Ice::CommunicatorPtr& communicator)
     bool shutdown = false;
     do
     {
-        cout << "==> ";
+        cout << "==> " << flush;
         char c;
         cin >> c;
         if(cin.good())
@@ -102,7 +100,7 @@ run(const Ice::CommunicatorPtr& communicator)
             {
                 string s;
                 s += c;
-                vector<HelloPrx>::size_type index = atoi(s.c_str());
+                size_t index = static_cast<size_t>(atoi(s.c_str()));
                 if(index < hellos.size())
                 {
                     hellos[index]->sayHello();

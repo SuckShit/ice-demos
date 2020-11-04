@@ -1,8 +1,6 @@
-// **********************************************************************
 //
-// Copyright (c) 2003-2018 ZeroC, Inc. All rights reserved.
+// Copyright (c) ZeroC, Inc. All rights reserved.
 //
-// **********************************************************************
 
 slice {
     java {
@@ -20,23 +18,23 @@ sourceSets {
 }
 
 dependencies {
-    compile localDependency("ice-compat")
-    compile localDependency("icestorm-compat")
-    runtime "org.apache.commons:commons-compress:1.14"
+    implementation localDependency("ice-compat")
+    implementation localDependency("icestorm-compat")
+    runtimeOnly "org.apache.commons:commons-compress:1.14"
 }
 
 // Create a jar for the publisher & subscriber which includes everything in the demo.
 task publisherJar(type: Jar) {
-    version = ""
-    baseName = "publisher"
+    archiveVersion = ""
+    archiveBaseName = "publisher"
     from(sourceSets.main.output) {
         include "**"
     }
 }
 
 task subscriberJar(type: Jar) {
-    version = ""
-    baseName = "subscriber"
+    archiveVersion = ""
+    archiveBaseName = "subscriber"
     from(sourceSets.main.output) {
         include "**"
     }
@@ -45,14 +43,14 @@ task subscriberJar(type: Jar) {
 publisherJar {
     manifest {
         attributes("Main-Class": "Publisher")
-        attributes("Class-Path": configurations.compile.resolve().collect { it.toURI() }.join(' '))
+        attributes("Class-Path": configurations.runtimeClasspath.resolve().collect { it.toURI() }.join(' '))
     }
 }
 
 subscriberJar {
     manifest {
         attributes("Main-Class": "Subscriber")
-        attributes("Class-Path": configurations.compile.resolve().collect { it.toURI() }.join(' '))
+        attributes("Class-Path": configurations.runtimeClasspath.resolve().collect { it.toURI() }.join(' '))
     }
 }
 

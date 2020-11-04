@@ -1,8 +1,6 @@
-// **********************************************************************
 //
-// Copyright (c) 2003-2018 ZeroC, Inc. All rights reserved.
+// Copyright (c) ZeroC, Inc. All rights reserved.
 //
-// **********************************************************************
 
 #include <Ice/Ice.h>
 #include <NestedI.h>
@@ -85,7 +83,7 @@ run(const Ice::CommunicatorPtr& communicator)
     {
         try
         {
-            cout << "enter nesting level or 'x' for exit: ";
+        cout << "enter nesting level or 'x' for exit: " << flush;
             cin >> s;
             int level = atoi(s.c_str());
             if(level > 0)

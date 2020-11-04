@@ -3,15 +3,12 @@ to a server, invoke an operation in the server, and the [server call
 back][1] into an object provided by the client as part of that invocation.
 
 To run the demo, first start the server:
-
-| .NET Framework 4.5 | .NET Core 2.0        |
-| ------------------ | -------------------- |
-| `server`           | `dotnet server.dll`  |
-
+```
+dotnet run --project server\server.csproj
+```
 In a separate window, start the client:
+```
+dotnet run --project client\client.csproj
+```
 
-| .NET Framework 4.5 | .NET Core 2.0       |
-| ------------------ | ------------------- |
-| `client`           | `dotnet client.dll` |
-
-[1]: https://doc.zeroc.com/display/Ice37/Nested+Invocations
+[1]: https://doc.zeroc.com/ice/4.0/client-server-features/the-ice-threading-model/nested-invocations

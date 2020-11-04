@@ -1,9 +1,7 @@
 #!/usr/bin/env python
-# **********************************************************************
 #
-# Copyright (c) 2003-2018 ZeroC, Inc. All rights reserved.
+# Copyright (c) ZeroC, Inc. All rights reserved.
 #
-# **********************************************************************
 
 import os, sys, socket, getopt
 
@@ -99,7 +97,7 @@ client = factory.create("client")
 client.save("client.p12")
 
 # Server certificate
-server = factory.create("server", cn = (dns if usedns else ip), ip=ip, dns=dns)
+server = factory.create("server", cn = (dns if usedns else ip), ip=ip, dns=dns, extendedKeyUsage="serverAuth,clientAuth")
 server.save("server.p12")
 
 try:

@@ -9,10 +9,7 @@ named `LANG` with value `en`. The Hello object implementation `HelloI`
 reads the value of `LANG` and shows the message in the corresponding
 language; you can try changing the value to `fr`, `de`, `es` or `it`.
 
-## .NET Framework 4.5 Setup
-
 Start the IceGrid registry and node:
-
 ```
 icegridnode --Ice.Config=config.grid
 ```
@@ -22,21 +19,6 @@ the IceGrid GUI. If you prefer to use the command-line utility, use:
 
 ```
 icegridadmin --Ice.Config=config.grid -e "application add application.xml"
-```
-
-## .NET Core 2.0 Setup
-
-Start the IceGrid registry and node:
-
-```
-icegridnode --Ice.Config=config.grid
-```
-
-Deploy the `HelloSimpsons` application (in file `application-netcore.xml`) with
-the IceGrid GUI. If you prefer to use the command-line utility, use:
-
-```
-icegridadmin --Ice.Config=config.grid -e "application add application-netcore.xml"
 ```
 
 Using IceGrid GUI
@@ -73,9 +55,10 @@ to log into the IceGrid registry and view the application you deployed above:
 Running the Client
 ------------------
 
-| .NET Framework 4.5 | .NET Core 2.0       |
-| ------------------ | ------------------- |
-| `client`           | `dotnet client.dll` |
+Start the client with:
+```
+dotnet --project client\client.csproj
+```
 
 The client simply calls 'sayHello' on the replicated 'hello' object.
 
@@ -118,7 +101,7 @@ Follow these steps:
    that does not validate passwords, so you can log in using any
    username/password combination.
 
-[1]: https://doc.zeroc.com/display/Ice37/Using+IceGrid+Deployment
-[2]: https://doc.zeroc.com/display/Ice37/IceBox
-[3]: https://doc.zeroc.com/display/Ice37/IceGrid+GUI+Tool
-[4]: https://doc.zeroc.com/display/Ice37/Glacier2+Integration+with+IceGrid
+[1]: https://doc.zeroc.com/ice/4.0/ice-services/icegrid/using-icegrid-deployment
+[2]: https://doc.zeroc.com/ice/4.0/icebox
+[3]: https://doc.zeroc.com/ice/4.0/ice-services/icegrid/icegrid-gui-tool
+[4]: https://doc.zeroc.com/ice/4.0/ice-services/glacier2/icegrid-and-glacier2-integration

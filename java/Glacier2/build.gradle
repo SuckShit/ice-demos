@@ -1,8 +1,6 @@
-// **********************************************************************
 //
-// Copyright (c) 2003-2018 ZeroC, Inc. All rights reserved.
+// Copyright (c) ZeroC, Inc. All rights reserved.
 //
-// **********************************************************************
 
 ['callback', 'simpleChat'].each {
     def name = it
@@ -23,10 +21,10 @@
         }
 
         dependencies {
-            compile localDependency("ice")
-            compile localDependency("icessl")
-            compile localDependency("glacier2")
-            runtime "org.apache.commons:commons-compress:1.14"
+            implementation localDependency("ice")
+            runtimeOnly localDependency("icessl")
+            implementation localDependency("glacier2")
+            runtimeOnly "org.apache.commons:commons-compress:1.14"
         }
 
         // Don't create the default jar.

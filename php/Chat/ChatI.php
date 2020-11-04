@@ -5,11 +5,9 @@
 //
 error_reporting(E_ERROR | E_WARNING | E_PARSE);
 
-# **********************************************************************
-#
-# Copyright (c) 2003-2018 ZeroC, Inc. All rights reserved.
-#
-# **********************************************************************
+//
+// Copyright (c) ZeroC, Inc. All rights reserved.
+//
 
 //
 // Encode the param $data as Json and send it to the client browser.
@@ -31,7 +29,7 @@ if(!extension_loaded("ice"))
 
 require_once 'Ice.php';
 require_once dirname(__FILE__) . '/SessionI.php';
-require_once dirname(__FILE__) . '/generated/PollingChat.php';
+require_once dirname(__FILE__) . '/PollingChat.php';
 
 $data = new \Ice\InitializationData;
 $data->properties = \Ice\getProperties();

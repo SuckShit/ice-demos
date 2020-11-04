@@ -1,8 +1,6 @@
-// **********************************************************************
 //
-// Copyright (c) 2003-2018 ZeroC, Inc. All rights reserved.
+// Copyright (c) ZeroC, Inc. All rights reserved.
 //
-// **********************************************************************
 
 #include <Ice/Ice.h>
 #include <Filesystem.h>
@@ -18,7 +16,7 @@ using namespace Filesystem;
 // parameter is the current nesting level (for indentation).
 
 static void
-listRecursive(const shared_ptr<DirectoryPrx>& dir, int depth = 0)
+listRecursive(const shared_ptr<DirectoryPrx>& dir, size_t depth = 0)
 {
     string indent(++depth, '\t');
 

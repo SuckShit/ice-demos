@@ -1,8 +1,6 @@
-// **********************************************************************
 //
-// Copyright (c) 2003-2018 ZeroC, Inc. All rights reserved.
+// Copyright (c) ZeroC, Inc. All rights reserved.
 //
-// **********************************************************************
 
 #include <Ice/Ice.h>
 #include <PrinterI.h>
@@ -32,6 +30,8 @@ PrinterI::ice_invoke(const vector<Ice::Byte>& inParams, vector<Ice::Byte>& outPa
 {
     Ice::CommunicatorPtr communicator = current.adapter->getCommunicator();
 
+    bool result = true;
+
     Ice::InputStream in(communicator, inParams);
     in.startEncapsulation();
 
@@ -39,15 +39,12 @@ PrinterI::ice_invoke(const vector<Ice::Byte>& inParams, vector<Ice::Byte>& outPa
     {
         string message;
         in.read(message);
-        in.endEncapsulation();
         cout << "Printing string `" << message << "'" << endl;
-        return true;
     }
     else if(current.operation == "printStringSequence")
     {
         Demo::StringSeq seq;
         in.read(seq);
-        in.endEncapsulation();
         cout << "Printing string sequence {";
         for(Demo::StringSeq::iterator p = seq.begin(); p != seq.end(); ++p)
         {
@@ -58,13 +55,11 @@ PrinterI::ice_invoke(const vector<Ice::Byte>& inParams, vector<Ice::Byte>& outPa
             cout << "'" << *p << "'";
         }
         cout << "}" << endl;
-        return true;
     }
     else if(current.operation == "printDictionary")
     {
         Demo::StringDict dict;
         in.read(dict);
-        in.endEncapsulation();
         cout << "Printing dictionary {";
         for(Demo::StringDict::iterator p = dict.begin(); p != dict.end(); ++p)
         {
@@ -75,29 +70,23 @@ PrinterI::ice_invoke(const vector<Ice::Byte>& inParams, vector<Ice::Byte>& outPa
             cout << p->first << "=" << p->second;
         }
         cout << "}" << endl;
-        return true;
     }
     else if(current.operation == "printEnum")
     {
         Demo::Color c;
         in.read(c);
-        in.endEncapsulation();
         cout << "Printing enum " << c << endl;
-        return true;
     }
     else if(current.operation == "printStruct")
     {
         Demo::Structure s;
         in.read(s);
-        in.endEncapsulation();
         cout << "Printing struct: name=" << s.name << ", value=" << s.value << endl;
-        return true;
     }
     else if(current.operation == "printStructSequence")
     {
         Demo::StructureSeq seq;
         in.read(seq);
-        in.endEncapsulation();
         cout << "Printing struct sequence: {";
         for(Demo::StructureSeq::iterator p = seq.begin(); p != seq.end(); ++p)
         {
@@ -108,15 +97,12 @@ PrinterI::ice_invoke(const vector<Ice::Byte>& inParams, vector<Ice::Byte>& outPa
             cout << p->name << "=" << p->value;
         }
         cout << "}" << endl;
-        return true;
     }
     else if(current.operation == "printClass")
     {
         Demo::CPtr c;
         in.read(c);
-        in.endEncapsulation();
         cout << "Printing class: s.name=" << c->s.name << ", s.value=" << c->s.value << endl;
-        return true;
     }
     else if(current.operation == "getValues")
     {
@@ -129,7 +115,6 @@ PrinterI::ice_invoke(const vector<Ice::Byte>& inParams, vector<Ice::Byte>& outPa
         out.write("hello");
         out.endEncapsulation();
         out.finished(outParams);
-        return true;
     }
     else if(current.operation == "throwPrintFailure")
     {
@@ -141,12 +126,11 @@ PrinterI::ice_invoke(const vector<Ice::Byte>& inParams, vector<Ice::Byte>& outPa
         out.write(ex);
         out.endEncapsulation();
         out.finished(outParams);
-        return false;
+        result = false;
     }
     else if(current.operation == "shutdown")
     {
         current.adapter->getCommunicator()->shutdown();
-        return true;
     }
     else
     {
@@ -156,4 +140,7 @@ PrinterI::ice_invoke(const vector<Ice::Byte>& inParams, vector<Ice::Byte>& outPa
         ex.operation = current.operation;
         throw ex;
     }
+
+    in.endEncapsulation();
+    return result;
 }

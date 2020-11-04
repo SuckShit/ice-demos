@@ -1,8 +1,6 @@
-// **********************************************************************
 //
-// Copyright (c) 2003-2018 ZeroC, Inc. All rights reserved.
+// Copyright (c) ZeroC, Inc. All rights reserved.
 //
-// **********************************************************************
 
 #include <Ice/Ice.h>
 #include <IceGrid/IceGrid.h>
@@ -77,10 +75,10 @@ run(const Ice::CommunicatorPtr& communicator)
     string s;
     do
     {
-        cout << "enter the number of iterations: ";
+        cout << "enter the number of iterations: " << flush;
         cin >> s;
         int count = atoi(s.c_str());
-        cout << "enter the delay between each greetings (in ms): ";
+        cout << "enter the delay between each greetings (in ms): " << flush;
         cin >> s;
         int delay = atoi(s.c_str());
         if(delay < 0)

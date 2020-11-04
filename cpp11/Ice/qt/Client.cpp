@@ -1,8 +1,6 @@
-// **********************************************************************
 //
-// Copyright (c) 2003-2018 ZeroC, Inc. All rights reserved.
+// Copyright (c) ZeroC, Inc. All rights reserved.
 //
-// **********************************************************************
 
 #include <Client.h>
 
@@ -52,7 +50,7 @@ MainWindow::MainWindow() :
     _delay(new QSlider(Qt::Horizontal)),
     _hello(new QPushButton("Hello World!")),
     _shutdown(new QPushButton("Shutdown")),
-    _flush(new QPushButton("flush"))
+    _flush(new QPushButton("Flush"))
 {
     auto layout = new QVBoxLayout();
     auto formLayout = new QFormLayout;

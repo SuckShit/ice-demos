@@ -1,8 +1,6 @@
-// **********************************************************************
 //
-// Copyright (c) 2003-2018 ZeroC, Inc. All rights reserved.
+// Copyright (c) ZeroC, Inc. All rights reserved.
 //
-// **********************************************************************
 
 #include <Ice/Ice.h>
 #include <FilesystemI.h>
@@ -73,7 +71,7 @@ main(int argc, char* argv[])
     return status;
 }
 
-int 
+int
 run()
 {
     //

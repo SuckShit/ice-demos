@@ -1,17 +1,16 @@
-# Ignore executables
-client
-server
-locator
-publisher
-subscriber
-talk
+# Ignore C++ executables
+cpp/**/client
+cpp/**/server
+cpp/**/locator
+cpp/**/publisher
+cpp/**/subscriber
+cpp/**/talk
 
-!**/msbuild/client
-!**/msbuild/server
-!**/msbuild/locator
-!**/msbuild/publisher
-!**/msbuild/subscriber
-!**/msbuild/locator
+!**/Sources/client
+!**/Sources/server
+!**/Sources/locator
+!**/Sources/publisher
+!**/Sources/subscriber
 
 .gradle
 *.jar
@@ -196,3 +195,15 @@ csharp/packages
 local.properties
 *.idea
 **/res/raw/*.bks
+
+Resource.designer.cs
+
+swift/Carthage
+*.swiftmodule
+*.app
+*.framework
+*.framework.dSYM
+*.dSYM
+
+.build
+Package.resolved

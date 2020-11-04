@@ -1,13 +1,11 @@
-// **********************************************************************
 //
-// Copyright (c) 2003-2018 ZeroC, Inc. All rights reserved.
+// Copyright (c) ZeroC, Inc. All rights reserved.
 //
-// **********************************************************************
 
-['async', 'asyncInvocation', 'bidir', 'callback', 'hello', 'invoke',
- 'interrupt', 'latency', 'minimal', 'multicast', 'nested',
- 'plugin', 'properties', 'serialize','session',
- 'throughput', 'optional','context'].each {
+['async', 'asyncInvocation', 'bidir', 'callback', 'hello', 'interceptor',
+ 'interrupt', 'invoke', 'latency', 'minimal', 'multicast', 'nested',
+ 'plugin', 'properties', 'serialize','session', 'throughput', 'optional',
+ 'context'].each {
     def name = it
     project(":demoIce${it.capitalize()}") {
         slice {
@@ -26,9 +24,9 @@
         }
 
         dependencies {
-            compile localDependency("ice")
-            compile localDependency("icessl")
-            runtime "org.apache.commons:commons-compress:1.14"
+            implementation localDependency("ice")
+            runtimeOnly localDependency("icessl")
+            runtimeOnly "org.apache.commons:commons-compress:1.14"
         }
 
         // Don't create the default jar.

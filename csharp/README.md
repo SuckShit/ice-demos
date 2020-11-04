@@ -1,5 +1,8 @@
 # C# Demos
 
+- [Overview](#overview)
+- [Building and running the demos](#building-and-running-the-demos)
+
 ## Overview
 
 This directory contains C# sample programs for various Ice components. These
@@ -18,67 +21,20 @@ in the [Ice manual][1].
 Refer to the [C++11 demos](../cpp11) for more examples that use the Ice services
 (Glacier2, IceGrid, IceStorm).
 
-## Building and running the Demos with .NET Framework on Windows
-
-### Build Requirements
-
-In order to build Ice for .NET sample programs, you need a supported version
-of Visual Studio.
-
-### Building the demos using NuGet packages:
-
-Open the solution file `C# NET Framework demos.sln` to build the sample programs.
-
-The demos are configured to use the Ice distribution from NuGet packages. These
-packages are automatically downloaded during the build. If you have disabled the
-automatic download of NuGet packages in Visual Studio, you need to restore the
-packages before you build.
-
-Packages can be restored via `Tools > NuGet Package Manager > Manage NuGet
-Packages for Solution...` in Visual Studio.
-
-After restoring the packages, right click on the desired demo in the Solution
-Explorer window and select `Build`.
-
-### Building the demos using a source build:
-
-- Build from command line:
-  * Open a Visual Studio command prompt
-  ```
-  cd ice-demos\csharp
-  MSBuild /p:IceHome=<Ice dist path> /t:Net45Build msbuild\ice.proj
-  ```
-
-- Build from Visual Studio:
-  * Open a Visual Studio command prompt
-  ```
-  cd ice-demos\csharp
-  MSBuild /p:IceHome=<Ice dist path> /t:Net45InstallLocalPackages msbuild\ice.proj
-  ```
-
-  * Open the solution file `C# NET Framework demos.sln` to build the sample programs.
-
-### Running the Demos
-
-For most demos, you can simply run `client` and `server` in separate Command
-Prompt windows.  Refer to the README.md file in each demo directory for the
-exact usage instructions.
-
-Some demos require Ice services such as IceGrid and IceStorm that are not
-included in the `zeroc.ice.net` NuGet package. To run these demos, the simplest
-is to first install the Ice MSI and add its bin directory to your PATH. Please
-refer to [Using the Windows Binary Distributions][4] for additional information.
-
-## Building and running the Demos with .NET Core on Windows, Linux, and macOS
+## Building and running the demos
 
 ### Build Requirements
 
 In order to build Ice for .NET sample programs, you need all of the following:
 
- - the [.NET Core 2.0 SDK][5]
+ - the [.NET SDK][5] version 5.0
  - Slice to C# compiler, for Windows platform the Slice to C# compiler is included
    with the `zeroc.ice.net` NuGet package installed during build, for other platforms
    refer to the [Release Notes][6].
+
+You can build from the command-line or with Visual Studio (2017 or 2019, for
+Windows or Mac). If you use Visual Studio, the [Ice Builder][3] extension is
+optional on Windows, and not available on macOS.
 
 ### Building the demos using NuGet packages:
 
@@ -91,11 +47,12 @@ cd csharp
 To build the sample programs run:
 
 ```
-dotnet msbuild "C# NET Core demos.sln" /t:"Restore;Build"
+dotnet restore "C# demos.sln"
+dotnet msbuild "C# demos.sln"
 ```
 
-The demos are configured to use the Ice distribution from NuGet packages. These
-packages are automatically downloaded during the build.
+The demos are configured to use the Ice NuGet packages. These packages are automatically
+downloaded from nuget.org during the build.
 
 ### Building the demos using a source build:
 
@@ -110,34 +67,35 @@ Install packages from the source build:
 On Windows
 
 ```
-msbuild /p:IceHome=<Ice dist path> /t:NetStandardInstallLocalPackages msbuild\ice.proj
+msbuild /p:IceHome=<Ice dist path> /t:InstallLocalPackages msbuild\ice.proj
 ```
 
 On Linux and macOS
 
 ```
-dotnet msbuild /p:IceHome=<Ice dist path> /t:NetStandardInstallLocalPackages msbuild/ice.proj
+dotnet msbuild /p:IceHome=<Ice dist path> /t:InstallLocalPackages msbuild/ice.proj
 ```
 
 To build the sample programs run:
 
 ```
-dotnet msbuild "C# NET Core demos.sln" /t:"Restore;Build"
+dotnet restore "C# NET demos.sln"
+dotnet msbuild "C# NET demos.sln"
 ```
 
 ### Running the Demos
 
-For most demos, you can simply run `dotnet client.dll` and `dotnet server.dll` in
-separate Command Prompt windows.  Refer to the README.md file in each demo directory
-for the exact usage instructions.
+For most demos, you can simply run `dotnet run --project server\server.csproj` and
+`dotnet run --project client\client.csproj` in separate command prompt windows. Refer to the README.md file in each demo
+directory for the exact usage instructions.
 
-Some demos require Ice services such as IceGrid and IceStorm that are not
-included in the `zeroc.ice.net` NuGet package. To run these demos, the simplest
-is to first install the Ice binary distribution for your platform  and add its bin
+Some demos require Ice services such as IceGrid and IceStorm that are not included in the `zeroc.ice.net` NuGet package.
+To run these demos, the simplest is to first install the Ice binary distribution for your platform  and add its bin
 directory to your PATH. Please refer to the [Release Notes][6] for additional information.
 
-[1]: https://doc.zeroc.com/display/Ice37/Ice+Manual
-[2]: https://zeroc.com/chat/index.html
-[4]: https://doc.zeroc.com/display/Rel/Using+the+Windows+Binary+Distributions+for+Ice+3.7.1
-[5]: https://www.microsoft.com/net/download/windows
-[6]: https://doc.zeroc.com/display/Ice37/Ice+Release+Notes
+[1]: https://doc.zeroc.com/ice/4.0/introduction
+[2]: https://doc.zeroc.com/technical-articles/general-topics/chat-demo
+[3]: https://marketplace.visualstudio.com/items?itemName=ZeroCInc.IceBuilder
+[4]: https://doc.zeroc.com/ice/4.0/release-notes/using-the-windows-binary-distributions
+[5]: https://dotnet.microsoft.com/download/dotnet-core
+[6]: https://doc.zeroc.com/rel/ice-releases/ice-4-0/ice-4-0-0-release-notes

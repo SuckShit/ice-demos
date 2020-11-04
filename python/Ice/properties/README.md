@@ -15,4 +15,4 @@ In a separate window, start the client:
 python client.py
 ```
 
-[1]: https://doc.zeroc.com/display/Ice37/The+Properties+Facet
+[1]: https://doc.zeroc.com/ice/4.0/administration-and-diagnostics/administrative-facility/the-properties-facet

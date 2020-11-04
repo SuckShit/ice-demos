@@ -1,10 +1,8 @@
-// **********************************************************************
 //
-// Copyright (c) 2003-2018 ZeroC, Inc. All rights reserved.
+// Copyright (c) ZeroC, Inc. All rights reserved.
 //
-// **********************************************************************
 
-import Demo.*;
+import com.zeroc.demos.Ice.async.Demo.*;
 
 public class WorkQueue extends Thread
 {
@@ -30,7 +28,7 @@ public class WorkQueue extends Thread
                 }
             }
 
-            if(_futures.size() != 0)
+            if(!_done && _futures.size() != 0)
             {
                 //
                 // Get next work item.

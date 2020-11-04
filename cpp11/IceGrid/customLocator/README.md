@@ -35,5 +35,5 @@ To run the client with the context set properly:
 client --context
 ```
 
-[1]: https://doc.zeroc.com/display/Ice37/Locators
-[2]: https://doc.zeroc.com/display/Ice37/IceGrid
+[1]: https://doc.zeroc.com/ice/4.0/client-server-features/locators
+[2]: https://doc.zeroc.com/ice/4.0/ice-services/icegrid

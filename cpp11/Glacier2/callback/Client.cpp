@@ -1,26 +1,25 @@
-// **********************************************************************
 //
-// Copyright (c) 2003-2018 ZeroC, Inc. All rights reserved.
+// Copyright (c) ZeroC, Inc. All rights reserved.
 //
-// **********************************************************************
 
 #include <Ice/Ice.h>
 #include <Glacier2/Glacier2.h>
-#include <CallbackI.h>
+#include <Callback.h>
 
 using namespace std;
 using namespace Demo;
 
-class CallbackClient : public Glacier2::Application
+class CallbackReceiverI : public Demo::CallbackReceiver
 {
 public:
 
-    CallbackClient();
-
-    virtual int runWithSession(int, char*[]) override;
-    virtual shared_ptr<Glacier2::SessionPrx> createSession() override;
-    virtual void sessionDestroyed() override;
+    virtual void callback(const Ice::Current&) override
+    {
+        cout << "received callback" << endl;
+    }
 };
+
+void run(const shared_ptr<Ice::Communicator>&);
 
 int
 main(int argc, char* argv[])
@@ -28,42 +27,53 @@ main(int argc, char* argv[])
 #ifdef ICE_STATIC_LIBS
     Ice::registerIceSSL();
 #endif
-    CallbackClient app;
-    return app.main(argc, argv, "config.client");
+
+    int status = 0;
+
+    try
+    {
+        //
+        // CommunicatorHolder's ctor initializes an Ice communicator,
+        // and its dtor destroys this communicator.
+        //
+        Ice::CommunicatorHolder ich(argc, argv, "config.client");
+
+        //
+        // The communicator initialization removes all Ice-related arguments from argc/argv
+        //
+        if(argc > 1)
+        {
+            cerr << argv[0] << ": too many arguments" << endl;
+            status = 1;
+        }
+        else
+        {
+            run(ich.communicator());
+        }
+    }
+    catch(const std::exception& ex)
+    {
+        cerr << argv[0] << ": " << ex.what() << endl;
+        status = 1;
+    }
+    return status;
 }
+
+void menu();
 
 void
-menu()
+run(const shared_ptr<Ice::Communicator>& communicator)
 {
-    cout <<
-        "usage:\n"
-        "t: invoke callback as twoway\n"
-        "o: invoke callback as oneway\n"
-        "O: invoke callback as batch oneway\n"
-        "f: flush all batch requests\n"
-        "v: set/reset override context field\n"
-        "F: set/reset fake category\n"
-        "s: shutdown server\n"
-        "r: restart the session\n"
-        "x: exit\n"
-        "?: help\n";
-}
-
-CallbackClient::CallbackClient() :
+    shared_ptr<Glacier2::RouterPrx> router = Ice::checkedCast<Glacier2::RouterPrx>(communicator->getDefaultRouter());
+    shared_ptr<Glacier2::SessionPrx> session;
     //
-    // Since this is an interactive demo we don't want any signal
-    // handling.
+    // Loop until we have successfully create a session.
     //
-    Glacier2::Application(Ice::SignalPolicy::NoSignalHandling)
-{
-}
-
-shared_ptr<Glacier2::SessionPrx>
-CallbackClient::createSession()
-{
-    shared_ptr<Glacier2::SessionPrx> sess;
-    while(!sess)
+    while(!session)
     {
+        //
+        // Prompt the user for the creadentials to create the session.
+        //
         cout << "This demo accepts any user-id / password combination.\n";
 
         string id;
@@ -74,9 +84,13 @@ CallbackClient::createSession()
         cout << "password: " << flush;
         getline(cin, pw);
 
+        //
+        // Try to create a session and break the loop if succeed,
+        // otherwise try again after printing the error message.
+        //
         try
         {
-            sess = router()->createSession(id, pw);
+            session = router->createSession(id, pw);
             break;
         }
         catch(const Glacier2::PermissionDeniedException& ex)
@@ -88,35 +102,47 @@ CallbackClient::createSession()
             cout << "cannot create session:\n" << ex.reason << endl;
         }
     }
-    return sess;
-}
 
-int
-CallbackClient::runWithSession(int argc, char*[])
-{
-    if(argc > 1)
-    {
-        cerr << appName() << ": too many arguments" << endl;
-        return 1;
-    }
+    Ice::Int acmTimeout = router->getACMTimeout();
+    Ice::ConnectionPtr connection = router->ice_getCachedConnection();
+    assert(connection);
+    connection->setACM(acmTimeout, IceUtil::None, Ice::ACMHeartbeat::HeartbeatAlways);
+    connection->setCloseCallback([](Ice::ConnectionPtr)
+                                 {
+                                     cout << "The Glacier2 session has been destroyed." << endl;
+                                 });
 
-    auto callbackReceiverIdent = createCallbackIdentity("callbackReceiver");
+    //
+    // The Glacier2 router routes bidirectional calls to objects in the client only
+    // when these objects have the correct Glacier2-issued category. The purpose of
+    // the callbackReceiverFakeIdent is to demonstrate this.
+    //
+    // The Identity name is not checked by the server any value can be used.
+    //
+    Ice::Identity callbackReceiverIdent;
+    callbackReceiverIdent.name = Ice::generateUUID();
+    callbackReceiverIdent.category = router->getCategoryForClient();
 
     Ice::Identity callbackReceiverFakeIdent;
-    callbackReceiverFakeIdent.name = "callbackReceiver";
+    callbackReceiverFakeIdent.name = Ice::generateUUID();
     callbackReceiverFakeIdent.category = "fake";
 
-    auto base = communicator()->propertyToProxy("Callback.Proxy");
+    auto base = communicator->propertyToProxy("Callback.Proxy");
     auto twoway = Ice::checkedCast<CallbackPrx>(base);
     auto oneway = twoway->ice_oneway();
     auto batchOneway = twoway->ice_batchOneway();
 
-    objectAdapter()->add(make_shared<CallbackReceiverI>(), callbackReceiverIdent);
+    auto adapter = communicator->createObjectAdapterWithRouter("", router);
+    adapter->activate();
 
-    // Should never be called for the fake identity.
-    objectAdapter()->add(make_shared<CallbackReceiverI>(), callbackReceiverFakeIdent);
+    adapter->add(make_shared<CallbackReceiverI>(), callbackReceiverIdent);
 
-    auto twowayR = Ice::uncheckedCast<CallbackReceiverPrx>(objectAdapter()->createProxy(callbackReceiverIdent));
+    //
+    // Callback will never be called for a fake identity.
+    //
+    adapter->add(make_shared<CallbackReceiverI>(), callbackReceiverFakeIdent);
+
+    auto twowayR = Ice::uncheckedCast<CallbackReceiverPrx>(adapter->createProxy(callbackReceiverIdent));
     auto onewayR = twowayR->ice_oneway();
 
     string override;
@@ -124,6 +150,9 @@ CallbackClient::runWithSession(int argc, char*[])
 
     menu();
 
+    //
+    // Client REPL.
+    //
     char c = 'x';
     do
     {
@@ -131,18 +160,11 @@ CallbackClient::runWithSession(int argc, char*[])
         cin >> c;
         if(c == 't')
         {
-            Ice::Context context;
-            context["_fwd"] = "t";
-            if(!override.empty())
-            {
-                context["_ovrd"] = override;
-            }
-            twoway->initiateCallback(twowayR, context);
+            twoway->initiateCallback(twowayR);
         }
         else if(c == 'o')
         {
             Ice::Context context;
-            context["_fwd"] = "o";
             if(!override.empty())
             {
                 context["_ovrd"] = override;
@@ -198,11 +220,6 @@ CallbackClient::runWithSession(int argc, char*[])
         {
             twoway->shutdown();
         }
-        else if(c == 'r')
-        {
-            cin.ignore(); // Ignore the new line
-            restart();
-        }
         else if(c == 'x')
         {
             // Nothing to do
@@ -218,12 +235,20 @@ CallbackClient::runWithSession(int argc, char*[])
         }
     }
     while(cin.good() && c != 'x');
-
-    return 0;
 }
 
 void
-CallbackClient::sessionDestroyed()
+menu()
 {
-    cout << "The Glacier2 session has been destroyed." << endl;
+    cout <<
+        "usage:\n"
+        "t: invoke callback as twoway\n"
+        "o: invoke callback as oneway\n"
+        "O: invoke callback as batch oneway\n"
+        "f: flush all batch requests\n"
+        "v: set/reset override context field\n"
+        "F: set/reset fake category\n"
+        "s: shutdown server\n"
+        "x: exit\n"
+        "?: help\n";
 }

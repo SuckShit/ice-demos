@@ -1,9 +1,7 @@
 #!/usr/bin/env python
-# **********************************************************************
 #
-# Copyright (c) 2003-2018 ZeroC, Inc. All rights reserved.
+# Copyright (c) ZeroC, Inc. All rights reserved.
 #
-# **********************************************************************
 
 import signal
 import sys
@@ -65,13 +63,6 @@ def run(communicator):
 
     if len(args) > 0:
         topicName = args[0]
-
-    if len(retryCount) > 0:
-        if option == "None":
-            option = "Twoway"
-        elif option != "Twoway" and option != "Ordered":
-            print(sys.argv[0] + ": retryCount requires a twoway proxy")
-            sys.exit(1)
 
     if batch and (option in ("Twoway", "Ordered")):
         print(sys.argv[0] + ": batch can only be set with oneway or datagram")
@@ -141,10 +132,9 @@ def run(communicator):
 
     try:
         topic.subscribeAndGetPublisher(qos, subscriber)
-    except IceStorm.AlreadySubscribed as ex:
-        # If we're manually setting the subscriber id ignore.
-        if len(id) == 0:
-            raise
+    except IceStorm.AlreadySubscribed:
+        # This should never occur when subscribing with an UUID
+        assert(id)
         print("reactivating persistent subscriber")
 
     communicator.waitForShutdown()

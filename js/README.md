@@ -14,6 +14,9 @@ The following subdirectories contain sample programs:
 
 - [Ice](./Ice) has several examples that illustrate fundamental Ice concepts.
 
+- [Manual](./Manual) contains complete examples for some of the code snippets
+in the [Ice manual][2].
+
 Refer to the [C++11 demos](../cpp11) for more examples that use Ice services
 such as IceGrid and IceStorm.
 
@@ -21,7 +24,7 @@ such as IceGrid and IceStorm.
 
 ### Prerequisites
 
-The JavaScript sample programs require an installation of [Node.js][2].
+The JavaScript sample programs require an installation of [Node.js][3].
 
 ### Building the Demos
 
@@ -95,6 +98,16 @@ JavaScript demo directory, and run:
 
 ```
 cd js/Ice/hello
+node Client
+```
+
+The JavaScript demos use `async`, `await` and other features introduced
+in ES2017. For compatibility with JavaScript interpreters that only include
+support for ES5, the build creates `es5` versions of the demos using the Babel
+JavaScript compiler. The es5 versions can be run:
+
+```
+cd js/Ice/hello/es5
 node Client
 ```
 
@@ -192,5 +205,6 @@ Download the certificate (`cacert.pem`) to the device from an email client.
 Next go to _Settings -> Security -> Install from storage_, and choose
 `cacert.pem`. Enter a name and press OK.
 
-[1]: https://zeroc.com/chat/index.html
-[2]: http://nodejs.org
+[1]: https://doc.zeroc.com/technical-articles/general-topics/chat-demo
+[2]: https://doc.zeroc.com/ice/4.0/introduction
+[3]: http://nodejs.org

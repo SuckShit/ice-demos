@@ -1,8 +1,6 @@
-// **********************************************************************
 //
-// Copyright (c) 2003-2018 ZeroC, Inc. All rights reserved.
+// Copyright (c) ZeroC, Inc. All rights reserved.
 //
-// **********************************************************************
 
 #import <HelloController.h>
 #import <Ice/Ice.h>
@@ -364,7 +362,7 @@ static NSString* hostnameKey = @"hostnameKey";
     hostnameTextField.text = [[NSUserDefaults standardUserDefaults] stringForKey:hostnameKey];
     flushButton.enabled = NO;
     [flushButton setAlpha:0.5];
-    [useDiscovery setOn:NO];
+    [useDiscovery setOn:YES];
 
     // This generates a compile time warning, but does actually work!
     [delaySlider setShowValue:YES];

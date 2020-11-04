@@ -1,15 +1,12 @@
-// **********************************************************************
 //
-// Copyright (c) 2003-2018 ZeroC, Inc. All rights reserved.
+// Copyright (c) ZeroC, Inc. All rights reserved.
 //
-// **********************************************************************
 
 #include <Ice/Ice.h>
 #include <CallbackI.h>
 
 using namespace std;
 using namespace Demo;
-
 
 //
 // Global variable for shutdownCommunicator

@@ -1,10 +1,8 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-# **********************************************************************
 #
-# Copyright (c) 2003-2018 ZeroC, Inc. All rights reserved.
+# Copyright (c) ZeroC, Inc. All rights reserved.
 #
-# **********************************************************************
 
 import sys
 import Ice
@@ -194,7 +192,7 @@ def printMetricsMap(admin, viewName, mapName, map):
             for so in o.remotes:
                 printMetrics("Remote", metricsField(so))
             for co in o.collocated:
-                printMetrics("Collocated", metricsField(so))
+                printMetrics("Collocated", metricsField(co))
 
     #
     # Print the table footer.

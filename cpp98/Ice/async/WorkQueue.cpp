@@ -1,8 +1,6 @@
-// **********************************************************************
 //
-// Copyright (c) 2003-2018 ZeroC, Inc. All rights reserved.
+// Copyright (c) ZeroC, Inc. All rights reserved.
 //
-// **********************************************************************
 
 #include <Ice/Ice.h>
 #include <WorkQueue.h>
@@ -26,7 +24,7 @@ WorkQueue::run()
             _monitor.wait();
         }
 
-        if(_callbacks.size() != 0)
+        if(!_done && _callbacks.size() != 0)
         {
             //
             // Get next work item.
